@@ -1,4 +1,4 @@
-d3.csv("data/data.csv", function(d) {
+d3.csv("data.csv", function(d) {
   var format = d3.time.format("%Y");
   return {
     'Year': format.parse(d.year),
@@ -13,8 +13,13 @@ d3.csv("data/data.csv", function(d) {
   d3.select('#content')
     .append('h2')
     .attr('id', 'title')
-    .text('Top U.S. Domestic Airline Performance, Jan.2005- Jan.2016');
+    .text('On-time arrival performance for top 5 US domestic airlines.');
 
+    // append subtitle
+  d3.select('#content')
+    .append('h2')
+    .attr('id', 'title')
+    .text('With which airline are you more likely to arrive on time?');
 
   // set svg
   var width = 960,
