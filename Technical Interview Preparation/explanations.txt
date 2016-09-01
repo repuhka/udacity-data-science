@@ -1,0 +1,109 @@
+Question 1.
+-----------
+
+Given two strings s and t, determine whether some anagram of
+t is a substring of s. For example: if s = “udacity” and t = “ad”,
+then the function returns True.
+
+Answer
+-----------
+
+My first attempt was a brute-force solution generating all permutations of t (itertools.permutations) and check if those can be found in s.
+The complexity of this was O(n*m^2), as it takes m^2 times to generate all permutations. Afterwards I looked it up and found some better ways
+to do it. I implemented a solution with O(n) space requirement for the hash table. 
+
+1) Calculate a hashtable of frequencies of all letters in t. If t = "udacity", then it is:
+{'u': 1, 'd': 1, 'a': 1, 'c': 1, 'i': 1, 't': 1, 'y': 1}
+2) Calculate a hashtable for the first N letters of s
+3) Compare the two hashtables O(1)
+4) If they match, we found an anagram of t is in s
+5) If they do not match, itterate letter by letter forward and update counts in the current "window" hashtable
+6) repeat untill the end of s
+
+Question 2.
+-----------
+
+Given a string a, find the longest palindromic substring contained in a.
+
+Answer:
+-------
+
+The O(n) solution to this is called Mancher's algorithm. To me it seems extremely trick and I am not sure I can reproduce
+in an actual interview. 
+
+Complexity of the solution I implemented is O(n^2), O(1) for pointers and space requirement for O(n) as all we need to do is keep one 
+longest palindrome string.
+
+1) Check every position in a word around which palindrome can be centered. Position can be at a letter for even lenght palindrome, or between
+for odd lenght. That is (N*2+1) positions. 
+2) At each position have 2 pointers, moving left & right respectively, as long as letters at pointers match.
+3) Once they stop matching - we have the longest palindrome for this position. 
+
+Question 3.
+-----------
+
+Given an undirected graph G, find the minimum spanning tree within G.
+A minimum spanning tree connects all vertices in a graph with the smallest
+possible total weight of edges. Your function should take in and return
+an adjacency list structured like this:
+
+{
+    'A': [('B', 2)],
+    'B': [('A', 2), ('C', 5)],
+    'C': [('B',5)]
+}
+
+Vertices are represented as unique strings.
+
+Answer:
+-------
+
+For this there seems to be a few algorithms, 2 of the most well-known are Prim's and Kruskal's. 
+Kruskal's algorithm will start from the cheapest edge by adding the next cheapest edge, provided they don't cycle.
+Prim's algorithm will grow a solution from a random vertex by adding the next cheapest vertex, the vertex thaat
+is not currently in the solution but connected to it by the cheapest edge. 
+
+Kruskal's algorithm is simpleter to code. Thus this would be my choise for an interview. It also requires O(E) 
+space to keep the sorted list of edges. 
+
+
+Question 4.
+-----------
+
+Find the least common ancestor between two nodes on a binary search tree.
+The least common ancestor is the farthest node from the root that is an
+ancestor of both nodes. For example, the root is a common ancestor of
+all nodes on the tree, but if both nodes are descendants of the root's
+left child, then that left child might be the lowest common ancestor.
+
+Answer:
+-------
+This is a recursive algorithm implemented as 'lca' method in the BST class. We start with the root node.
+For every node that we look, if it's value is bigger than both n1 & n2, then they are both to the left 
+of the node and we should continue in the left subtree. If the node's value is smaller than n1, n2, we need
+to recurse into the right subtree. Otherwise curret node is LCA. The space requirement is constant O(1), the
+complexity is O(log(n)) as this is how many steps the search in BST needs to take. 
+
+Question 5.
+-----------
+
+Find the element in a singly linked list that's m elements from the end.
+For example, if a linked list has 5 elements, the 3rd element from the end is
+the 3rd element.
+
+Answer:
+-------
+
+For this one I used the Node class that has data & next fields. I also created a helper method to create a linked
+list from the list of values and returns a head node. 
+
+I used 2 pointers, at first both fast & slow point to the head node. Then fast pointer walks m-1 steps forward. 
+After this, fast & slow pointers start moving together, one step at a time. When the fast pointer is at the end of
+the list, the slow pointer is at mth element froom the end. The space requirement is O(1) and the complexity is O(n). 
+
+
+Test cases.
+-----------
+
+Instead of just printing the outcome with a comment on the expected, I used assert statements to compare expected & 
+actual outputs. If everything is as expected, the program will print ('QX: passed'). In case not there will be an expection. 

@@ -1,0 +1,117 @@
+---
+title: "Exploratory Data Analysis and Cleaning for RITA Flight Data"
+author: "Gergana Ilieva"
+date: "June 23, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##About
+
+This dataset is comprised by the US airlines flight delays & performance. It 
+includes all flights from all carriers from January 2005 to January 2016. 
+ 
+[id]: http://www.transtats.bts.gov/OT_Delay/ot_delaycause1.asp?display=download&pn=0&month=11&year=2014
+[The data can be downloaded from the RITA site.][id]
+
+##Quick inspection of the data
+
+Let's start by quickly reviewing the structure and summary of our dataset.
+
+```{r echo=FALSE, Quick_Summary}
+flights <- read.csv('data/413498804_42016_3325_airline_delay_causes.csv')
+str(flights)
+summary(flights)
+head(flights)
+```
+
+##Data cleaning
+
+```{r echo=FALSE}
+library(dplyr)
+flights$date <- as.Date(paste(flights$year, flights$X.month, 1, sep = '-'),
+                        format = "%Y-%m-%d")
+summary(flights$date)
+
+```
+
+If we want to quickly check how many distinct carriers do we have in our data set:
+```{r echo = FALSE}
+nrow(table(flights$carrier))
+```
+
+In order to make a new summary table & get rid of the NA values (in case of any)
+we apply the following code
+
+```{r echo = FALSE}
+flights_new = flights %>%
+  group_by(date, year, carrier_name) %>%
+  summarize (arrivals = sum(arr_flights),
+             delayed = sum(arr_del15),
+             cancelled = sum(arr_cancelled),
+             diverted = sum(arr_diverted)) %>%
+  transform(ontime = 1 - delayed/arrivals)
+
+flights_new <- flights_new[complete.cases(flights_new),]
+str(flights_new)
+```
+
+##Exploratory plot
+```{r echo = FALSE}
+library(ggplot2)
+ggplot(data = flights_new, aes(x = date, y = ontime)) + 
+  geom_line(aes(color = carrier_name))
+```
+
+##Find airlines to subset data (aggregation by carrier)
+```{r echo = FALSE}
+aggrr <- flights_new %>%
+  group_by(carrier_name) %>%
+  summarize(mnt_avg = mean(arrivals),
+            arrivals = sum(arrivals))
+
+sel_carriers <- subset(aggrr, mnt_avg >= quantile(mnt_avg, 0.81))$carrier_name
+sel_carriers
+```
+
+##Reshape data
+```{r echo = FALSE}
+df <- subset(flights_new, is.element(carrier_name, sel_carriers)) %>%
+  group_by(year, carrier_name) %>%
+  summarize(arrivals = sum(arrivals),
+            delayed = sum(delayed),
+            cancelled = sum(cancelled), 
+            diverted = sum(diverted)) %>%
+  transform(ontime = 1 - delayed/arrivals)
+df <- df[complete.cases(df),]
+head(df)
+```
+
+##Plot again
+```{r echo = FALSE}
+library(ggplot2)
+summary(flights$year)
+
+p1 <- ggplot(data = df,
+       aes(x = year, y = ontime)) +
+  geom_line(aes(color = carrier_name)) +
+  scale_x_continuous(limits=c(2005, 2015), breaks=c(2005:2015))
+
+p1
+
+p2 <- ggplot(data = df,
+       aes(x = year, y = arrivals)) +
+  geom_line(aes(color = carrier_name)) +
+  scale_x_continuous(limits=c(2005, 2015), breaks=c(2005:2015))
+
+p2
+```
+
+##Export new data file
+```{r echo = FALSE}
+write.csv(df, file="data.csv", row.names=FALSE)
+```
+
