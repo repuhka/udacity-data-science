@@ -35,7 +35,7 @@ While studying the data, I hypothesized that there might be trends in individual
 So my natural choice of first visualization was a line chart with multiple series to compare trends between different airlines & highlight deviations. 
 
 
-![Initial R Plot](https://raw.githubusercontent.com/repuhka/udacity-data-science/master/P6/final_submission/charts/graph1.jpg)
+![Initial R Plot](https://github.com/repuhka/udacity-data-science/tree/master/Making%20an%20Effective%20Data%20Visualization/charts/graph1.jpg)
 
 This is clearly way too busy! There were 27 airlines, and the line chart is ineffective in displaying any distinguishable trends. 
 
@@ -46,8 +46,8 @@ Based on the new data set, 2 plots were created:
 -	Chart showing the total annual flights
 
 
-![Second R Plot](https://raw.githubusercontent.com/repuhka/udacity-data-science/master/P6/final_submission/charts/graph2.jpg)
-![Third R Plot](https://raw.githubusercontent.com/repuhka/udacity-data-science/master/P6/final_submission/charts/graph3.jpg)
+![Second R Plot](https://github.com/repuhka/udacity-data-science/tree/master/Making%20an%20Effective%20Data%20Visualization/charts/graph2.jpg)
+![Third R Plot](https://github.com/repuhka/udacity-data-science/tree/master/Making%20an%20Effective%20Data%20Visualization/charts/graph3.jpg)
 
 My initial evaluation of these charts were that they were satisfactory in visualizing the different trends of these 5 airlines.  It shows how various airlines improved or worsened over time, and which airlines were currently performing the best, as of 2016.  
 
@@ -73,12 +73,12 @@ I am a little concerned with the 'Lie Factor' and truncating the y-axis minimum 
 This initial iteration can be viewed at index.html, as well as below:
 
 
-![First Chart](https://raw.githubusercontent.com/repuhka/udacity-data-science/master/P6/final_submission/charts/graph4.jpg)
+![First Chart](https://github.com/repuhka/udacity-data-science/tree/master/Making%20an%20Effective%20Data%20Visualization/charts/graph4.jpg)
 
 
 Below is the final data visualization created based on the feedback received from the interviews:
 
-![Final Chart](https://github.com/repuhka/udacity-data-science/blob/master/P6/final_submission/charts/graph5.jpg)
+![Final Chart](https://github.com/repuhka/udacity-data-science/tree/master/Making%20an%20Effective%20Data%20Visualization/charts/graph5.jpg)
 
 
 ### Feedback
